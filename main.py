@@ -1,3 +1,4 @@
+import ipaddress
 import json
 import socket
 import time
@@ -5,9 +6,6 @@ import time
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
-
-app = FastAPI()
-
 
 POSSIBLE_PROXY_HEADERS = [
     "via",
@@ -22,10 +20,6 @@ POSSIBLE_PROXY_HEADERS = [
 ]
 
 
-def _ip(request):
-    return request.headers.get("X-Client-Ip", request.client.host)
-
-
 def respond(content):
     if isinstance(content, dict):
         content = json.dumps(content)
@@ -34,6 +28,12 @@ def respond(content):
         content = f"{content}\n"
         media_type = "text/plain"
     return Response(content, media_type=media_type)
+
+
+def _ip(request):
+    ip_address = ipaddress.ip_address(request.client.host)
+    ip_address_in_header = request.headers.get("X-Client-Ip")
+    return ip_address if ip_address.is_global else ip_address_in_header
 
 
 def ip(request):
@@ -86,6 +86,8 @@ REQUEST_TYPES = {
     "proxy": proxy,
     "test": test,
 }
+
+app = FastAPI()
 
 
 @app.get("/")
