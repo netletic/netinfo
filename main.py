@@ -19,6 +19,8 @@ POSSIBLE_PROXY_HEADERS = [
     "http_x_appengine_country",
 ]
 
+TEST_STRING = "bumblebee"
+
 
 def respond(content):
     if isinstance(content, dict):
@@ -75,7 +77,7 @@ def proxy(request):
 
 
 def test(request):
-    return Response("bumblebee\n", media_type="text/plain")
+    return Response(f"{TEST_STRING}\n", media_type="text/plain")
 
 
 REQUEST_TYPES = {
