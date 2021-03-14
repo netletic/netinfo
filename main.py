@@ -93,7 +93,7 @@ app = FastAPI()
 
 
 @app.get("/")
-def netinfo(request: Request):
+async def netinfo(request: Request):
     for request_type, func in REQUEST_TYPES.items():
         if request_type in request.base_url.hostname:
             return func(request)
