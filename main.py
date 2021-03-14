@@ -33,7 +33,7 @@ def respond(content):
 def _ip(request):
     ip_address = ipaddress.ip_address(request.client.host)
     ip_address_in_header = request.headers.get("X-Client-Ip")
-    return ip_address if ip_address.is_global else ip_address_in_header
+    return str(ip_address) if ip_address.is_global else ip_address_in_header
 
 
 def ip(request):
