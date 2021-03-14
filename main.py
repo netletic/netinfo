@@ -2,12 +2,13 @@ import ipaddress
 import json
 import socket
 import time
+from typing import Union
 
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
 
-POSSIBLE_PROXY_HEADERS = [
+KNOWN_PROXY_HEADERS = [
     "via",
     "forwarded",
     "client-ip",
@@ -22,7 +23,7 @@ POSSIBLE_PROXY_HEADERS = [
 TEST_STRING = "bumblebee"
 
 
-def respond(content):
+def respond(content: Union[str, dict]) -> Response:
     if isinstance(content, dict):
         content = json.dumps(content)
         media_type = "application/json"
@@ -32,18 +33,18 @@ def respond(content):
     return Response(content, media_type=media_type)
 
 
-def _ip(request):
+def _ip(request: Request) -> str:
     ip_address = ipaddress.ip_address(request.client.host)
     ip_address_in_header = request.headers.get("X-Client-Ip")
     return str(ip_address) if ip_address.is_global else ip_address_in_header
 
 
-def ip(request):
+def ip(request: Request) -> Response:
     ip = _ip(request)
     return respond(content=ip)
 
 
-def ptr(request):
+def ptr(request: Request) -> Response:
     try:
         ip = _ip(request)
         ptr, _, _ = socket.gethostbyaddr(ip)
@@ -53,20 +54,20 @@ def ptr(request):
         return respond(content=ptr)
 
 
-def epoch(request):
+def epoch(request: Request) -> Response:
     epoch_time = str(int(time.time()))
     return respond(content=epoch_time)
 
 
-def headers(request):
+def headers(request: Request) -> Response:
     headers = dict(request.headers)
     return respond(content=headers)
 
 
-def proxy(request):
+def proxy(request: Request) -> Response:
     proxy_headers = {
         proxy_header: request.headers.get(proxy_header).strip()
-        for proxy_header in POSSIBLE_PROXY_HEADERS
+        for proxy_header in KNOWN_PROXY_HEADERS
         if request.headers.get(proxy_header)
     }
     return (
@@ -76,11 +77,11 @@ def proxy(request):
     )
 
 
-def test(request):
-    return Response(f"{TEST_STRING}\n", media_type="text/plain")
+def test(request: Request) -> Response:
+    return respond(TEST_STRING)
 
 
-REQUEST_TYPES = {
+lookup_types = {
     "ip": ip,
     "ptr": ptr,
     "epoch": epoch,
@@ -92,9 +93,9 @@ REQUEST_TYPES = {
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def netinfo(request: Request):
-    for request_type, func in REQUEST_TYPES.items():
-        if request_type in request.base_url.hostname:
+    for lookup_type, func in lookup_types.items():
+        if lookup_type in request.base_url.hostname:
             return func(request)
     return ip(request)
