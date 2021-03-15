@@ -65,16 +65,15 @@ def headers(request: Request) -> Response:
 
 
 def proxy(request: Request) -> Response:
-    proxy_headers = {
-        proxy_header: request.headers.get(proxy_header).strip()
-        for proxy_header in KNOWN_PROXY_HEADERS
-        if request.headers.get(proxy_header)
+    proxy_headers_found = {
+        known_proxy_header: request.headers.get(known_proxy_header).strip()
+        for known_proxy_header in KNOWN_PROXY_HEADERS
+        if request.headers.get(known_proxy_header)
     }
-    return (
-        respond(content=proxy_headers)
-        if proxy_headers
-        else Response("", status_code=204)
-    )
+    if proxy_headers_found:
+        return respond(content=proxy_headers_found)
+    else:
+        Response("", status_code=204)
 
 
 def test(request: Request) -> Response:
