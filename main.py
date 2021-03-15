@@ -2,6 +2,7 @@ import ipaddress
 import json
 import socket
 import time
+from random import choice
 from typing import Union
 
 from fastapi import FastAPI
@@ -20,7 +21,9 @@ KNOWN_PROXY_HEADERS = [
     "http_x_appengine_country",
 ]
 
-TEST_STRING = "bumblebee"
+
+with open("rfc1925.txt") as fp:
+    the_fundamental_truths = fp.readlines()
 
 
 def respond(content: Union[str, dict]) -> Response:
@@ -77,7 +80,7 @@ def proxy(request: Request) -> Response:
 
 
 def test(request: Request) -> Response:
-    return respond(TEST_STRING)
+    return respond(content=choice(the_fundamental_truths))
 
 
 lookup_types = {
@@ -98,3 +101,7 @@ async def netinfo(request: Request):
         if lookup_type in request.base_url.hostname:
             return func(request)
     return ip(request)
+
+
+if __name__ == "__main__":
+    print(the_fundamental_truths)
