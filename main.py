@@ -100,8 +100,4 @@ async def netinfo(request: Request):
     for lookup_type, func in lookup_types.items():
         if lookup_type in str(request.base_url.hostname):
             return func(request)
-        return ip(request)
-
-
-if __name__ == "__main__":
-    print(the_fundamental_truths)
+    return ip(request)
