@@ -1,4 +1,3 @@
-import ipaddress
 import json
 import socket
 import time
@@ -37,9 +36,12 @@ def respond(content: Union[str, dict]):
 
 
 def _ip(request: Request):
-    ip_address = ipaddress.ip_address(request.client.host)
-    ip_address_in_header = request.headers.get("X-Client-Ip")
-    return str(ip_address) if ip_address.is_global else ip_address_in_header
+    ip_address_in_header = request.headers.get("x-client-ip")
+    if ip_address_in_header:
+        return ip_address_in_header
+    else:
+        ip_address = request.client.host
+        return str(ip_address)
 
 
 def ip(request: Request):
