@@ -14,23 +14,33 @@ netinfo currently supports the following requests:
 
 
 ## Example usage
-
-```bash
+### IP address
+```console
 curl https://ip.netletic.com
 198.51.100.84
-
+```
+### PTR
+```console
 curl https://ptr.netletic.com
 ip-198.51.100.84.example.test
-
+```
+### Test
+```console
 curl https://test.netletic.com
-In protocol design, perfection has been reached not when there is nothing left to add, but when there is nothing left to take away.
-
+It Has To Work.
+```
+### Epoch time
+```console
 curl https://epoch.netletic.com
 1615854627
-
+```
+### GET headers
+```console
 curl https://headers.netletic.com
-{"host": "headers.netletic.com", "x-client-ip": "198.51.100.84", "x-client-port": "65078", "connection": "Keep-Alive", "accept": "*/*", "max-forwards": "10", "user-agent": "curl/7.69.1", "x-waws-unencoded-url": "/", "client-ip": "198.51.100.84:65078" , "disguised-host": "headers.netletic.com", "x-site-deployment-id": "azwebapp-netinfo-prod-1", "was-default-hostname": "azwebapp-netinfo-prod-1.azurewebsites.net", "x-original-url": "/", "x-forwarded-for": "198.51.100.84:65078", "x-arr-ssl": "2048|256|C=US, O=DigiCert Inc, CN=GeoTrust TLS DV RSA Mixed SHA256 2020 CA-1|CN=headers.netletic.com", "x-forwarded-proto": "https", "x-appservice-proto": "https", "x-forwarded-tlsversion": "1.2"}%
-
+{"host": "headers.netletic.com", "x-client-ip": "198.51.100.84", "...": "..."}
+```
+### Known proxy headers
+```console
 curl https://proxy.netletic.com
 {"client-ip": "198.51.100.84:65078"}
 ```
