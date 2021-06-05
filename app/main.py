@@ -1,4 +1,5 @@
 import json
+import pathlib
 import socket
 import time
 from random import choice
@@ -23,7 +24,10 @@ KNOWN_PROXY_HEADERS = [
 ]
 
 
-with open("rfc1925.txt") as fp:
+WORKING_DIR = pathlib.Path(__file__).parent.absolute()
+
+
+with open(WORKING_DIR / "rfc1925.txt") as fp:
     the_fundamental_truths = fp.readlines()
 
 

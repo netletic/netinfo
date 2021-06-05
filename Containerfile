@@ -9,7 +9,8 @@ WORKDIR /home/netinfo
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY rfc1925.txt .
-COPY main.py .
+EXPOSE 8000
 
-CMD ["python", "main.py"]
+COPY ./app ./app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -4,7 +4,7 @@ import time
 from fastapi.testclient import TestClient
 from freezegun import freeze_time
 
-from main import app
+from app.main import app
 
 client = TestClient(app)
 
