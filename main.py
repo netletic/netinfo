@@ -4,9 +4,11 @@ import time
 from random import choice
 from typing import Union
 
+import uvicorn
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
+
 
 KNOWN_PROXY_HEADERS = [
     "via",
@@ -103,3 +105,7 @@ async def netinfo(request: Request):
         if lookup_type in str(request.base_url.hostname):
             return func(request)
     return ip(request)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, port=8000, host="0.0.0.0")
