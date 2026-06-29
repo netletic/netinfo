@@ -1,6 +1,6 @@
 coverage
 fastapi
 freezegun
-pytest
+pytest==9.1.1
 requests
 uvicorn
