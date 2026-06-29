@@ -2,5 +2,5 @@ coverage
 fastapi
 freezegun
 pytest
-requests
+requests==2.34.2
 uvicorn
