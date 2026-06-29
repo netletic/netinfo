@@ -3,4 +3,4 @@ fastapi
 freezegun
 pytest
 requests
-uvicorn
+uvicorn==0.49.0
