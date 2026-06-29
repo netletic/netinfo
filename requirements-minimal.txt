@@ -1,3 +1,3 @@
 fastapi
-gunicorn
+gunicorn==26.0.0
 uvicorn[standard]
