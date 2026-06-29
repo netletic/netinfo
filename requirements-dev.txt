@@ -1,5 +1,5 @@
 coverage
-fastapi
+fastapi==0.138.2
 freezegun
 pytest
 requests
