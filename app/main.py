@@ -10,7 +10,6 @@ from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
 
-
 KNOWN_PROXY_HEADERS = [
     "via",
     "forwarded",
